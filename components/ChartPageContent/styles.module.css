@@ -1,7 +1,0 @@
-.root {
-  display: flex;
-  align-items: flex-start;
-}
-.root > div:first-child {
-  margin-right: 2rem;
-}

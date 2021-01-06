@@ -1,22 +1,13 @@
-import _uniq from 'lodash/uniq';
-import { MarketsTypes } from 'redux/types/markets';
+import { MarketsTypes, PricesTypes } from 'redux/types/markets';
 import { initialState } from 'redux/reducers/marketsStore/marketsStore';
-import { fetchMarketsData } from "api/markets";
+import { fetchMarketsData, fetchPrices } from "api/markets";
 import { getApiError } from 'utils/errors';
 
-export const getMarketsDataAction = async (dispatch) => {
+import { GetPricesRequest } from 'redux/types/markets';
+
+export const getMarketsDataAction = async (token, dispatch) => {
 	try {
-		const { data: { data } } = await fetchMarketsData();
-		
-		const marketsData = Object.entries(data).reduce((init, [market, marketPairs]) => ({
-			...init,
-			markets: [...init.markets, market],
-			pairs: _uniq([...init.pairs, ...marketPairs]),
-		}), {
-			markets: [],
-			pairs: [],
-			totalData: data,
-		});
+		const marketsData = await fetchMarketsData(token);
 		
 		dispatch({
 			type: MarketsTypes.SET_MARKETS,
@@ -31,4 +22,13 @@ export const getMarketsDataAction = async (dispatch) => {
 		  },
 	  });
 	}
+};
+
+export const getPrices = async (fetchData: GetPricesRequest, dispatch) => {
+	const { data: { data: { prices } } } = await fetchPrices(fetchData);
+	
+	dispatch({
+		type: PricesTypes.SET_PRICES,
+		data: prices,
+	});
 };

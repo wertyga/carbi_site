@@ -9,7 +9,7 @@ const AppContent = ({ Component, pageProps }) => {
 	return (
 		<div className={styles.wrapper}>
 			<SideMenu />
-			<Container>
+			<Container className={styles.appContainer}>
 				<Component {...pageProps} />
 			</Container>
 		</div>

@@ -9,23 +9,14 @@ export const validateEmail = (value: string): boolean => {
 };
 
 // { name: { value: 'value', require: true/false/undefined } }
-export const checkRequireFields = (
-  data: Record<string, { require?: boolean }> = {}
-  ): { isValid: boolean, errors: Record<keyof typeof data, string> | {} } => {
-  const errors: Record<keyof typeof data, string> = {};
-
-  const requireFields = Object.entries(data)
-    .reduce((init, [key, value]) => {
-      if (!value.require) return init;
-
-      return [...init, [key, value]];
-    }, []);
-
-  requireFields.forEach(([key, { value }]) => {
+export const checkRequireFields = (data) => {
+  const errors = {};
+  
+  Object.entries(data).forEach(([key, value]) => {
     if (key === 'email') {
-      const correctEmail = validateEmail(value);
+      const correctEmail = validateEmail(value as string);
       if (!correctEmail) {
-        errors.email = gfErrors.emailError(value).en;
+        errors[key] = gfErrors.emailError(value).en;
       }
     } else if (!value) {
       errors[key] = gfErrors.emptyField.en;

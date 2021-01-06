@@ -4,7 +4,7 @@ const emptyField = {
 };
 
 export const gfErrors = {
-  emailError: value => {
+  emailError: (value) => {
     if (!value) return { en: emptyField.en, ru: emptyField.ru };
     return { en: 'E-mail invalid', ru: 'Неверный адрес электронной почты' };
   },

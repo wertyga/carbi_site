@@ -8,39 +8,52 @@ import AppContent from 'components/AppContent/AppContent';
 import { getInitialState } from 'utils';
 import theme from 'utils/theme';
 import { getOrInitializeStore } from 'redux/initializeStore';
-import { RootState } from 'redux/reducers/rootReducer';
+import { getUserAction } from 'redux/actions/user/userActions';
+import { removeCookeAction } from 'redux/actions/cookies/cookiesActions';
 
 import 'styles/globals.css';
 
 export default class CarbiApp extends App {
-  reduxStore: RootState;
-  
+  reduxStore;
+
   static async getInitialProps(appContext) {
     const { ctx: { req } } = appContext;
-    const rootStore = getOrInitializeStore();
-    const [, appProps] = await Promise.all([
-      req && getInitialState(req, rootStore),
+
+    const [reduxData, appProps] = await Promise.all([
+      req && getInitialState(req),
       App.getInitialProps(appContext),
     ]);
-    
+
     return {
       ...appProps,
-      reduxStoreData: rootStore.getState(),
+      reduxData,
     };
   }
-  
+
   constructor(props) {
     super(props);
-    this.reduxStore = getOrInitializeStore(props.reduxStoreData);
+    this.reduxStore = getOrInitializeStore(props.reduxData);
   }
-  
+
   componentDidMount() {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
+    this.getUser();
   }
-  
+
+  getUser = async () => {
+    const { cookiesStore: { token } } = this.reduxStore.getState();
+    if (!token) return;
+
+    try {
+      await getUserAction(token, this.reduxStore.dispatch);
+    } catch (e) {
+      removeCookeAction('token', this.reduxStore.dispatch);
+    }
+  }
+
   render() {
     return (
       <Provider store={this.reduxStore}>
@@ -53,9 +66,9 @@ export default class CarbiApp extends App {
         </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <AppContent{...this.props} />
+          <AppContent {...this.props} />
         </ThemeProvider>
       </Provider>
     );
   }
-};
+}

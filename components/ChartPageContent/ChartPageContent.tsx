@@ -1,20 +1,31 @@
-import {useEffect, useState} from "react";
-import Markets from "components/Markets/Markets";
-import PairsMenu from "components/PairsMenu/PairsMenu";
-
+import { useMemo, useState} from "react";
+import { useRouter } from 'next/router';
+import useMobile from 'hooks/useMobile';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMarketsDataAction } from 'redux/actions/markets/marketsActions';
 
-import styles from './styles.module.css';
+import ChartPageMobileContent from './ChartPageMobileContent';
+import ChatPageDesktopContent from './ChatPageDesktopContent';
+
+import useStyles from './styles';
+import {getMarketWithChosenPairs} from "./helpers";
 
 const ChartPageContent = () => {
 	const marketsStore = useSelector(({ marketsStore }) => marketsStore);
+	const styles = useStyles();
+	const isMobile = useMobile();
+	const router = useRouter();
+	
 	const dispatch = useDispatch();
-	const [chosenMarket, chooseMarket] = useState('');
+	const [chosenMarkets, chooseMarket] = useState([]);
 	const [chosenPairs, choosePairs] = useState([]);
 	
 	const handleMarketSelect = (market: string) => {
-		chooseMarket(market);
+		const isMarketInList = chosenMarkets.includes(market);
+		chooseMarket(
+			isMarketInList
+			? chosenMarkets.filter(item => item !== market)
+			: [...chosenMarkets, market]
+		);
 	};
 	
 	const handleChoosePair = (pair: string) => {
@@ -26,25 +37,51 @@ const ChartPageContent = () => {
 		)
 	};
 	
-	useEffect(() => {
-		if (marketsStore.markets.length > 0) return;
-		getMarketsDataAction(dispatch);
-	}, []);
+	const handleCompare = () => {
+		const pairs = chosenPairs.join('_');
+		const markets = chosenMarkets.join('_');
+		router.push(`/chart/compare?markets=${markets}&pairs=${pairs}`);
+	};
 	
-	console.log(chosenMarket);
+	const handleClearPairs = () => {
+		choosePairs([]);
+		chooseMarket([]);
+	};
+	const handleClearMarkets = () => chooseMarket([]);
+	
+	const markets = useMemo(() => {
+		const availableMarkets = getMarketWithChosenPairs(chosenPairs, marketsStore.totalData);
+		chooseMarket(chosenMarkets.filter(market => availableMarkets.includes(market)));
+		return availableMarkets;
+	}, [chosenPairs.length]);
+	
 	return (
 		<div className={styles.root}>
-			<Markets
-				onMarketSelect={handleMarketSelect}
-				selectedMarket={chosenMarket}
-			/>
-			{!!chosenMarket &&
-				<PairsMenu
-					chosenMarket={chosenMarket}
+			{isMobile ?
+				<ChartPageMobileContent
 					chosenPairs={chosenPairs}
-					onPairChoose={handleChoosePair}
+					chosenMarkets={chosenMarkets}
+					markets={markets}
+					handleMarketSelect={handleMarketSelect}
+					handleChoosePair={handleChoosePair}
+					handleClearPairs={handleClearPairs}
+					handleClearMarkets={handleClearMarkets}
+					handleCompare={handleCompare}
+					styles={styles}
+				/> :
+				<ChatPageDesktopContent
+					chosenPairs={chosenPairs}
+					markets={markets}
+					chosenMarkets={chosenMarkets}
+					handleMarketSelect={handleMarketSelect}
+					handleChoosePair={handleChoosePair}
+					handleClearPairs={handleClearPairs}
+					handleClearMarkets={handleClearMarkets}
+					handleCompare={handleCompare}
+					styles={styles}
 				/>
 			}
+			
 		</div>
 	);
 };

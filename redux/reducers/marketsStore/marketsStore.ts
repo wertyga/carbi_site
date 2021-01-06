@@ -7,7 +7,7 @@ export const initialState = {
 	error: '',
 };
 
-export const marketsStore = (state = initialState, { type, data }): MarketsState => {
+export const marketsStore = (state: MarketsState = initialState, { type, data }): MarketsState => {
 	switch(type) {
 		case MarketsTypes.SET_MARKETS:
 			return data;

@@ -1,21 +1,33 @@
 import type { NextApiRequest } from 'next'
+import Cookies from 'universal-cookie';
 import MobileDetect from 'mobile-detect';
-import { setDevice } from 'redux/actions/device/deviceActions';
-import { getMarketsDataAction } from 'redux/actions/markets/marketsActions';
+import { fetchMarketsData } from 'api/markets';
 
-const setDeviceType = async (req, rootStore) => {
+const getDeviceType = async (req) => {
   const md = new MobileDetect(req.headers['user-agent']);
-  setDevice(md.mobile(), rootStore.dispatch);
+  return {
+    isMobile: md.mobile(),
+  };
 };
 
-const getMarketData = async (req, rootStore) => {
-  if (req.url !== '/chart') return;
-  await getMarketsDataAction(rootStore.dispatch);
+const getCookies = (req) => {
+  const cookies = new Cookies(req.headers.cookie);
+  return cookies.getAll();
 };
 
-export const getInitialState = async (req: NextApiRequest, rootStore) => {
-  await Promise.all([
-    setDeviceType(req, rootStore),
-    getMarketData(req, rootStore),
+export const getInitialState = async (req: NextApiRequest) => {
+  const cookiesStore = getCookies(req);
+  const [
+    deviceStore,
+    marketsStore,
+  ] = await Promise.all([
+    getDeviceType(req),
+    fetchMarketsData(cookiesStore.token),
   ]);
+  
+  return {
+    deviceStore,
+    marketsStore,
+    cookiesStore,
+  };
 };
