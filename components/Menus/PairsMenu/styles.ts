@@ -4,7 +4,7 @@ type Props = {
 	isPairChosen: boolean,
 };
 
-const useStyles = makeStyles(({ breakpoints }: Theme) => ({
+const useStyles = makeStyles(({ spacing }: Theme) => ({
 	wrapper: {
 		position: 'relative',
 		width: '15rem',
@@ -17,12 +17,8 @@ const useStyles = makeStyles(({ breakpoints }: Theme) => ({
 	checkbox: {
 		padding: 0,
 	},
-	cardHeader: {
-		// [breakpoints.up('xs')]: {
-		// 	'& svg': {
-		// 		display: 'none',
-		// 	},
-		// },
+	searchInput: {
+		margin: `0 ${spacing(0)}rem`,
 	},
 }));
 

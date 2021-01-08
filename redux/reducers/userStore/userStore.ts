@@ -1,6 +1,14 @@
 import { UserAction, UserState, UserTypes } from 'redux/types/user';
 
-export const userStore = (state: UserState = {}, { type, data }: UserAction) => {
+const initialState = {
+	token: '',
+	first_name: '',
+	last_name: '',
+	username: '',
+	tariff: 0,
+};
+
+export const userStore = (state: UserState = initialState, { type, data }: UserAction) => {
 	switch(type) {
 		case UserTypes.SET_USER:
 			return data;

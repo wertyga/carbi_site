@@ -7,7 +7,7 @@ import _uniq from "lodash/uniq";
 // 		case SocketTypes.SAVE_SIGNALS: {
 // 			if (!data.signals || !data.signals.length) return;
 // 			const symbols = _uniq(data.signals.map(({symbol}) => symbol));
-// 			!!data.signals.length && socket.emit('fetch-signal-prices', _uniq(symbols));
+// 			!!data.signals.length && socket.emit('fetch-signal-compareStore', _uniq(symbols));
 // 			break;
 // 		}
 //
@@ -15,7 +15,7 @@ import _uniq from "lodash/uniq";
 // 			const symbols = store.getState().signalsStore.signals
 // 				.map(({symbol}) => symbol);
 // 			const symbol = action.data.signal.symbol;
-// 			socket.emit('fetch-signal-prices', _uniq([...symbols, symbol]));
+// 			socket.emit('fetch-signal-compareStore', _uniq([...symbols, symbol]));
 // 			break;
 // 		}
 //
@@ -27,7 +27,7 @@ import _uniq from "lodash/uniq";
 // 				})
 // 				.map(({symbol}) => symbol);
 //
-// 			socket.emit('fetch-signal-prices', _uniq(symbols));
+// 			socket.emit('fetch-signal-compareStore', _uniq(symbols));
 // 			break;
 // 		}
 //
@@ -36,7 +36,7 @@ import _uniq from "lodash/uniq";
 // 				.filter(({_id}) => _id !== data._id)
 // 				.map(({symbol}) => symbol);
 //
-// 			socket.emit('fetch-signal-prices', _uniq(symbols));
+// 			socket.emit('fetch-signal-compareStore', _uniq(symbols));
 // 			break;
 // 		}
 // 	};
@@ -47,8 +47,8 @@ import _uniq from "lodash/uniq";
 // 	socket.on('connect', () => {
 // 		console.log('connect_socket');
 // 	});
-// 	socket.on('symbols_price', prices => {
-// 		console.log(prices);
+// 	socket.on('symbols_price', compareStore => {
+// 		console.log(compareStore);
 // 	});
 // };
 

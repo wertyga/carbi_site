@@ -1,11 +1,13 @@
-import { MarketsTypes, PricesTypes } from 'redux/types/markets';
+import { MarketsTypes } from 'redux/types/markets';
+import { PricesTypes } from 'redux/types/prices';
 import { initialState } from 'redux/reducers/marketsStore/marketsStore';
 import { fetchMarketsData, fetchPrices } from "api/markets";
 import { getApiError } from 'utils/errors';
 
-import { GetPricesRequest } from 'redux/types/markets';
+import { rootAction } from '../rootAction';
 
-export const getMarketsDataAction = async (token, dispatch) => {
+export const getMarketsDataAction = async (token?: string) => {
+	const { dispatch } = rootAction();
 	try {
 		const marketsData = await fetchMarketsData(token);
 		
@@ -24,11 +26,19 @@ export const getMarketsDataAction = async (token, dispatch) => {
 	}
 };
 
-export const getPrices = async (fetchData: GetPricesRequest, dispatch) => {
-	const { data: { data: { prices } } } = await fetchPrices(fetchData);
+export const getPricesAction = async (fetchData: { pairs: string[], markets: string[] }) => {
+	const { rootState: { userStore: { token } }, dispatch } = rootAction();
+	const { data: { data: { prices } } } = await fetchPrices({ ...fetchData, token });
 	
 	dispatch({
 		type: PricesTypes.SET_PRICES,
 		data: prices,
+	});
+};
+
+export const dropPricesStateAction = () => {
+	const { dispatch } = rootAction();
+	dispatch({
+		type: PricesTypes.DROP_PRICES,
 	});
 };

@@ -4,6 +4,7 @@ import useStyles from './styles';
 
 interface Props {
 	checked: boolean,
+	disabled: boolean,
 	className?: string,
 	label?: string | number,
 	onChange?: Function,
@@ -14,6 +15,7 @@ export const Checkbox: React.FC<Props> = ({
   className = '',
   onChange = _noop,
   label,
+	disabled,
 }) => {
   const styles = useStyles({ checked });
   return (
@@ -23,11 +25,12 @@ export const Checkbox: React.FC<Props> = ({
       className={styles.checkboxRoot}
     >
       {label && <span>{label}</span>}
-      <span
-        className={`${styles.checkbox} ${className}`}
-      >
-        {checked && <span className={styles.check} />}
-      </span>
+      <input
+	      type="checkbox"
+	      checked={checked}
+	      disabled={disabled}
+	      readOnly
+      />
     </div>
   );
 };

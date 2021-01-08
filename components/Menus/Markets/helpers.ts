@@ -1,9 +1,9 @@
-export const getMarketWithChosenPairs = (chosenPairs: string[], totalMarketData: Record<string, string[]>):
+export const getMarketWithChosenPairs = (chosenPairs: string, totalMarketData: Record<string, string[]>):
 		string[] => {
 	const markets: Array<keyof typeof totalMarketData> = [];
 	
 	Object.entries(totalMarketData).forEach(([market, pairs]) => {
-		const isPairInMarket = chosenPairs.every(item => pairs.includes(item));
+		const isPairInMarket = pairs.includes(chosenPairs);
 		if (isPairInMarket) markets.push(market);
 	});
 	

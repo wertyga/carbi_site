@@ -1,8 +1,9 @@
 import axios from 'axios';
 import _uniq from "lodash/uniq";
 import { MarketsGetResponse, MarketsState } from 'redux/types/markets';
+import { PricesGetResponse, GetPricesRequest } from 'redux/types/prices';
 
-export const fetchMarketsData = async (token: string): Promise<MarketsState> => {
+export const fetchMarketsData = async (token?: string): Promise<MarketsState> => {
 	const { data: { data } }: MarketsGetResponse = await axios({
 		method: 'get',
 		url: `${process.env.API_GATEWAY}/data/markets-pairs`,
@@ -20,7 +21,7 @@ export const fetchMarketsData = async (token: string): Promise<MarketsState> => 
 	});
 };
 
-export const fetchPrices = ({ pairs, markets, token }) => (
+export const fetchPrices = ({ pairs, markets, token }: GetPricesRequest): Promise<PricesGetResponse> => (
 	axios({
 		method: 'get',
 		url: `${process.env.API_GATEWAY}/data/prices`,
@@ -33,3 +34,4 @@ export const fetchPrices = ({ pairs, markets, token }) => (
 		},
 	})
 );
+

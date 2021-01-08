@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 import { FormControl, FormGroup, Input, InputLabel, Button } from "@material-ui/core";
 import { signUpUserAction } from 'redux/actions/user/userActions';
 import { getApiError } from 'utils/errors';
@@ -11,7 +10,6 @@ import useStyles from './styles';
 
 const AuthForm: React.FC = () => {
 	const styles = useStyles();
-	const dispatch = useDispatch();
 	const router = useRouter();
 	const [state, setState] = useState({
 		password: '',
@@ -40,7 +38,7 @@ const AuthForm: React.FC = () => {
 		}
 		try {
 			setState(prev => ({ ...prev, pending: true }));
-			await signUpUserAction(state.password, dispatch);
+			await signUpUserAction(state.password);
 			router.replace('/chart');
 		} catch (e) {
 			const { message } = getApiError(e);

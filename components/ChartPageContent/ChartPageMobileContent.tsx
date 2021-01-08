@@ -16,20 +16,18 @@ type Props = {
 	handleClearPairs: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 	handleClearMarkets: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 	styles: ReturnType<typeof useStyles>,
-	chosenPairs: string[],
-	markets: string[],
+	chosenPair: string,
 };
 
 const ChatPageMobileContent: React.FC<Props> = ({
   chosenMarkets,
   handleMarketSelect,
   styles,
-  chosenPairs,
   handleChoosePair,
   handleClearPairs,
   handleClearMarkets,
   handleCompare,
-  markets,
+	chosenPair,
 }) => {
   const [isMarketsOpen, setMarketsOpen] = useState(false);
 
@@ -38,22 +36,21 @@ const ChatPageMobileContent: React.FC<Props> = ({
   return (
     <div className={styles.chartContentMobile}>
       <PairsMenu
-        chosenPairs={chosenPairs}
+        chosenPair={chosenPair}
         onPairChoose={handleChoosePair}
         handleClear={handleClearPairs}
         className={styles.childMenu}
-        headIcon={chosenPairs.length > 1 && <ArrowForwardIosIcon onClick={toggleMarketsMenu} />}
-        subHeader={chosenPairs.length > 1 && markets.join(', ')}
+        headIcon={!!chosenPair && <ArrowForwardIosIcon onClick={toggleMarketsMenu} />}
       />
       <Slide direction="right" in={isMarketsOpen}>
         <div className={styles.mobilePairs}>
           <Markets
             onMarketSelect={handleMarketSelect}
             chosenMarkets={chosenMarkets}
+            chosenPair={chosenPair}
             className={styles.childMenu}
             handleClear={handleClearMarkets}
             handleCompare={handleCompare}
-            markets={markets}
             headIcon={<CloseIcon onClick={toggleMarketsMenu} />}
           />
         </div>

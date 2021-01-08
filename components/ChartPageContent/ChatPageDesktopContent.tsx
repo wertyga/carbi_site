@@ -1,9 +1,8 @@
 import React from 'react';
-import { Slide } from '@material-ui/core';
 
+import CompareList from 'components/Compare/CompareList/CompareList';
 import Markets from '../Menus/Markets/Markets';
 import PairsMenu from '../Menus/PairsMenu/PairsMenu';
-
 import useStyles from './styles';
 
 type Props = {
@@ -14,41 +13,40 @@ type Props = {
 	handleClearPairs: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 	handleClearMarkets: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 	styles: ReturnType<typeof useStyles>,
-	chosenPairs: string[],
-	markets: string[],
+	chosenPair: string,
 };
 
 const ChatPageDesktopContent: React.FC<Props> = ({
   chosenMarkets,
   handleMarketSelect,
   styles,
-  chosenPairs,
+  chosenPair,
   handleChoosePair,
   handleClearPairs,
   handleClearMarkets,
   handleCompare,
-  markets,
-}) => (
-  <>
-    <PairsMenu
-      chosenPairs={chosenPairs}
-      onPairChoose={handleChoosePair}
-      handleClear={handleClearPairs}
-      className={styles.childMenu}
-    />
-    <Slide direction="right" in={chosenPairs.length > 1}>
-      <div>
-        <Markets
-          onMarketSelect={handleMarketSelect}
-          chosenMarkets={chosenMarkets}
-          handleClear={handleClearMarkets}
-          handleCompare={handleCompare}
-          className={styles.childMenu}
-          markets={markets}
-        />
-      </div>
-    </Slide>
-  </>
-);
+}) => {
+	return (
+		<div className={styles.chartContentDesktop}>
+			<div  className={styles.menusWrapper}>
+				<PairsMenu
+					chosenPair={chosenPair}
+					onPairChoose={handleChoosePair}
+					handleClear={handleClearPairs}
+					className={styles.childMenu}
+				/>
+				<Markets
+					onMarketSelect={handleMarketSelect}
+					chosenMarkets={chosenMarkets}
+					chosenPair={chosenPair}
+					handleClear={handleClearMarkets}
+					handleCompare={handleCompare}
+					className={styles.childMenu}
+				/>
+			</div>
+			<CompareList />
+		</div>
+	)
+};
 
 export default ChatPageDesktopContent;

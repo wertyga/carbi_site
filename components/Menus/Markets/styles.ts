@@ -7,7 +7,7 @@ type Props = {
 const useStyles = makeStyles((theme: Theme) => ({
 	wrapper: {
 		width: '15rem',
-		minHeight: '20rem',
+		minHeight: '100%',
 		position: 'relative',
 	},
 	loading: {

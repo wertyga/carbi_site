@@ -6,7 +6,7 @@ const ChartPage: NextPage = () => {
 		<div>
 			<h1 className="page-head">ChartPage</h1>
 			<ChartPageContent />
-			</div>
+		</div>
 	);
 };
 

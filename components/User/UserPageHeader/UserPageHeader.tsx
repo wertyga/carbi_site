@@ -1,18 +1,17 @@
 import { FormControlLabel, Switch } from '@material-ui/core';
 import { userLogoutAction } from 'redux/actions/user/userActions';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import storeSelector from './storeSelector';
 
 import useStyles from './styles';
 
 const UserPageHeader = () => {
   const { cookiesStore: { token } } = useSelector(storeSelector);
-  const dispatch = useDispatch();
   const styles = useStyles();
 
   const handleLogout = () => {
-    userLogoutAction(dispatch);
+    userLogoutAction();
   };
 
   return (

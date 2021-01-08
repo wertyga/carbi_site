@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card } from '@material-ui/core';
+import { Card, TextField, InputAdornment } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import { CheckboxList } from 'components/Common/CheckboxList/CheckboxList';
 import { gfMarkets } from 'goldfish/gfMarkets';
 
@@ -12,8 +13,7 @@ import { MenusCardHeader } from '../MenusCardHeader/MenusCardHeader';
 import useStyles from './styles';
 
 interface PairsMenuProps {
-	chosenPairs: string[],
-	subHeader?: string,
+	chosenPair: string,
 	onPairChoose: Function,
 	handleClear: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 	className?: string | Record<string, boolean>,
@@ -21,18 +21,21 @@ interface PairsMenuProps {
 }
 
 const PairsMenu: React.FC<PairsMenuProps> = ({
-  chosenPairs,
+  chosenPair,
   onPairChoose,
   className,
   handleClear,
   headIcon,
-  subHeader,
 }) => {
   const { pairs } = useSelector(storeSelector);
   const [sliceValue, setSlice] = useState(50);
-  const styles = useStyles({ isPairChosen: chosenPairs.length > 0 });
+  const [search, setSearch] = useState('');
+  const styles = useStyles({ isPairChosen: !!chosenPair });
 
   const handleChange = (pair) => () => onPairChoose(pair);
+  const handleSearch = ({ target: { value } }) => {
+  	setSearch(value);
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -41,25 +44,42 @@ const PairsMenu: React.FC<PairsMenuProps> = ({
   }, []);
 
   const haveNoPairs = !pairs || pairs.length === 0;
+  const searchablePairs = pairs.slice(0, sliceValue).filter(pair => (
+	  new RegExp(search, 'i').test(pair)
+  ));
   return (
     <Card className={`${styles.wrapper} ${className}`}>
       <MenusCardHeader
         title={gfMarkets.pairsMenuTitle}
         icon={headIcon}
-        subHeader={subHeader}
       />
+	    <TextField
+	      value={search}
+	      onChange={handleSearch}
+	      placeholder="Search..."
+	      className={styles.searchInput}
+	      size="small"
+	      variant="outlined"
+	      InputProps={{
+		      startAdornment: (
+			      <InputAdornment position="start">
+			        <SearchIcon />
+			      </InputAdornment>
+		      )
+	      }}
+	    />
       {haveNoPairs && <span>{gfMarkets.noPairs}</span>}
       {!haveNoPairs && (
       <div>
         <CheckboxList
-          list={pairs.slice(0, sliceValue)}
+          list={searchablePairs}
           listClassName={styles.pairsMenuList}
-          chosenItem={(pair: string) => chosenPairs.includes(pair)}
+          chosenItem={(pair: string) => chosenPair === pair}
           onChange={(pair) => handleChange(pair)}
           label={(pair) => pair}
         />
         <PairsMarketsMenuActions
-          withClear={chosenPairs.length > 0}
+          withClear={!!chosenPair}
           handleClear={handleClear}
         />
       </div>

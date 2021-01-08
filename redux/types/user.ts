@@ -1,3 +1,5 @@
+import { CompareSignal } from './compare';
+
 export enum UserTypes {
 	SET_USER = 'SET_USER',
 	SET_USER_ERROR = 'SET_USER_ERROR',
@@ -5,13 +7,13 @@ export enum UserTypes {
 }
 
 export type UserState = {
-	token: string,
+	token?: string,
 	first_name: string,
 	last_name: string,
 	username: string,
 	tariff: number,
 	error?: string,
-} | {};
+};
 
 export type UserAction = {
 	type: UserTypes,
@@ -26,6 +28,7 @@ export type UserGetResponse = {
 			last_name: string,
 			username: string,
 			tariff: number,
+			signals: Array<CompareSignal & { notifies: [], owner: string, _id: string }>,
 		},
 	},
 };

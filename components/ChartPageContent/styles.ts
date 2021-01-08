@@ -3,8 +3,8 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 const useStyles = makeStyles(({ palette, spacing, breakpoints }: Theme) => ({
   root: {
     display: 'flex',
-    alignItems: 'flex-start',
     position: 'relative',
+    flexDirection: 'column',
     [breakpoints.up('sm')]: {
       overflow: 'hidden',
       padding: '2px',
@@ -29,6 +29,7 @@ const useStyles = makeStyles(({ palette, spacing, breakpoints }: Theme) => ({
     left: 0,
     zIndex: 2,
     width: '100%',
+    height: '100%',
   },
   mobileClose: {
     position: 'absolute',
@@ -41,6 +42,13 @@ const useStyles = makeStyles(({ palette, spacing, breakpoints }: Theme) => ({
   },
   chartContentMobile: {
     width: '100%',
+  },
+  chartContentDesktop: {
+    width: '100%',
+    display: 'flex',
+  },
+  menusWrapper: {
+    display: 'flex',
   },
 }));
 

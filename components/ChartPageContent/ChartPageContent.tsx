@@ -1,23 +1,25 @@
-import { useMemo, useState} from "react";
-import { useRouter } from 'next/router';
+import { useState} from "react";
+import { useSelector } from 'react-redux';
 import useMobile from 'hooks/useMobile';
-import { useDispatch, useSelector } from 'react-redux';
+import { getApiError } from 'utils/errors';
+
+import { addCompareAction } from 'redux/actions/compare/compareActions';
 
 import ChartPageMobileContent from './ChartPageMobileContent';
 import ChatPageDesktopContent from './ChatPageDesktopContent';
 
+import storeSelector from './storeSelector';
+
 import useStyles from './styles';
-import {getMarketWithChosenPairs} from "./helpers";
 
 const ChartPageContent = () => {
-	const marketsStore = useSelector(({ marketsStore }) => marketsStore);
 	const styles = useStyles();
 	const isMobile = useMobile();
-	const router = useRouter();
+	const { compareStore } = useSelector(storeSelector);
 	
-	const dispatch = useDispatch();
 	const [chosenMarkets, chooseMarket] = useState([]);
-	const [chosenPairs, choosePairs] = useState([]);
+	const [chosenPair, choosePair] = useState('');
+	const [error, setError] = useState('');
 	
 	const handleMarketSelect = (market: string) => {
 		const isMarketInList = chosenMarkets.includes(market);
@@ -26,42 +28,39 @@ const ChartPageContent = () => {
 			? chosenMarkets.filter(item => item !== market)
 			: [...chosenMarkets, market]
 		);
+		setError('');
 	};
 	
 	const handleChoosePair = (pair: string) => {
-		const isExist = chosenPairs.includes(pair);
-		choosePairs(
-			isExist
-				? chosenPairs.filter(item => item !== pair)
-				: [...chosenPairs, pair]
-		)
+		choosePair(chosenPair === pair ? '' : pair);
+		chooseMarket([]);
+		setError('');
 	};
 	
-	const handleCompare = () => {
-		const pairs = chosenPairs.join('_');
-		const markets = chosenMarkets.join('_');
-		router.push(`/chart/compare?markets=${markets}&pairs=${pairs}`);
+	const handleCompare = async () => {
+		setError('');
+		const existSymbol = compareStore.find(({ symbol }) => symbol === chosenPair);
+		if (existSymbol) return;
+		try {
+			await addCompareAction([{ symbol: chosenPair, markets: chosenMarkets}]);
+		} catch (e) {
+		  setError(getApiError(e).message);
+		}
 	};
 	
 	const handleClearPairs = () => {
-		choosePairs([]);
+		choosePair('');
 		chooseMarket([]);
 	};
 	const handleClearMarkets = () => chooseMarket([]);
 	
-	const markets = useMemo(() => {
-		const availableMarkets = getMarketWithChosenPairs(chosenPairs, marketsStore.totalData);
-		chooseMarket(chosenMarkets.filter(market => availableMarkets.includes(market)));
-		return availableMarkets;
-	}, [chosenPairs.length]);
-	
 	return (
 		<div className={styles.root}>
+			{error && <span className="error">{error}</span>}
 			{isMobile ?
 				<ChartPageMobileContent
-					chosenPairs={chosenPairs}
+					chosenPair={chosenPair}
 					chosenMarkets={chosenMarkets}
-					markets={markets}
 					handleMarketSelect={handleMarketSelect}
 					handleChoosePair={handleChoosePair}
 					handleClearPairs={handleClearPairs}
@@ -70,8 +69,7 @@ const ChartPageContent = () => {
 					styles={styles}
 				/> :
 				<ChatPageDesktopContent
-					chosenPairs={chosenPairs}
-					markets={markets}
+					chosenPair={chosenPair}
 					chosenMarkets={chosenMarkets}
 					handleMarketSelect={handleMarketSelect}
 					handleChoosePair={handleChoosePair}

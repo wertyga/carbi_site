@@ -26,7 +26,7 @@ const PairsMarketsMenuActions: React.FC<PairsMenuProps> = ({
         className={styles.successBtn}
         onClick={handleCompare}
       >
-        Compare
+        Add
       </Button>
       )}
       {withClear && (
