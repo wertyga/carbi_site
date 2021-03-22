@@ -12,7 +12,7 @@ import _uniq from "lodash/uniq";
 // 		}
 //
 // 		case SocketTypes.ADD_SIGNAL: {
-// 			const symbols = store.getState().signalsStore.signals
+// 			const symbols = store.getState().notifiesStore.signals
 // 				.map(({symbol}) => symbol);
 // 			const symbol = action.data.signal.symbol;
 // 			socket.emit('fetch-signal-compareStore', _uniq([...symbols, symbol]));
@@ -20,7 +20,7 @@ import _uniq from "lodash/uniq";
 // 		}
 //
 // 		case SocketTypes.UPDATE_CHART: {
-// 			const symbols = store.getState().signalsStore.signals
+// 			const symbols = store.getState().notifiesStore.signals
 // 				.map((item) => {
 // 					if (item._id === action.data.signal._id) return action.data.signal;
 // 					return item;
@@ -32,7 +32,7 @@ import _uniq from "lodash/uniq";
 // 		}
 //
 // 		case SocketTypes.DELETE_CHART: {
-// 			const symbols = store.getState().signalsStore.signals
+// 			const symbols = store.getState().notifiesStore.signals
 // 				.filter(({_id}) => _id !== data._id)
 // 				.map(({symbol}) => symbol);
 //

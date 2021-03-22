@@ -1,35 +1,50 @@
 import { Chart } from 'components/Chart/Chart';
 import { useSelector } from 'react-redux';
+import { PricesFetcher } from 'components/Common/PricesFetcher/PricesFetcher';
+import { Notify } from 'components/Notify/Notify';
 
-import { MarketPriceResponse } from 'redux/types/markets';
+import { MarketPriceResponse } from 'redux/types/prices';
+import { CompareItem } from 'redux/types/compare';
 
 import storeSelector from "./storeSelector";
 import useStyles from './styles';
 
 type Selector = {
 	prices: MarketPriceResponse,
+	compares: CompareItem[],
 };
 
 const CompareContent = () => {
-	const { prices }: Selector = useSelector(storeSelector);
+	const { prices, compares }: Selector = useSelector(storeSelector);
 	const styles = useStyles();
 	
 	return (
-		<div className={styles.chartContent}>
-			{Object.entries(prices).map(([symbol, value], i) => {
-				const chartData = [
-					['Market', 'Price'],
-					...value.map(({ market, price }) => ([`${market} - ${price}`, price])),
-				];
-				return (
-					<Chart
-						key={symbol}
-						data={chartData as any}
-						title={symbol}
-					/>
-				);
-			})}
-		</div>
+		<>
+			<PricesFetcher />
+			<div className={styles.compareContent}>
+				{compares.map(({ symbol, markets, _id }) => {
+					if (!prices[symbol]) return null;
+					const chartData = [
+						['Market', 'Price'],
+						...markets.map(market => {
+							const { price = 0 } = prices[symbol].find(item => item.market === market) || {};
+							return [`${market} - ${price}`, price]
+						})
+					];
+					return (
+						<div key={_id}>
+							<Chart
+								data={chartData as any}
+								title={symbol}
+							/>
+							<Notify
+								signalId={_id}
+							/>
+						</div>
+					);
+				})}
+			</div>
+		</>
 	);
 };
 

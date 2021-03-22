@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { WithPrices } from 'components/Common/WithPrices/WithPrices';
+import { PricesFetcher } from 'components/Common/PricesFetcher/PricesFetcher';
 
 import { CompareItem } from '../CompareItem/CompareItem';
 
@@ -12,7 +12,8 @@ const CompareList = () => {
 	const { pricesStore, compareStore } = useSelector(storeSelector);
 	const styles = useStyles();
 	return (
-		<WithPrices>
+		<>
+			<PricesFetcher />
 			<div className={styles.compareList}>
 				{compareStore.map(({ _id, symbol }) => {
 					if (!pricesStore[symbol]) return null;
@@ -26,7 +27,7 @@ const CompareList = () => {
 					);
 				})}
 			</div>
-		</WithPrices>
+		</>
 	);
 };
 

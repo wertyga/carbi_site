@@ -1,5 +1,3 @@
 export const gfSignals = {
-	types: {
-		
-	},
+	submitBtn: 'Submit',
 };

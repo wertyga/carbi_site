@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { CompareSaveRequest } from 'redux/types/compare';
+import { CompareSaveRequest, CompareSaveResponse } from 'redux/types/compare';
 
-export const saveSignal = ({ token = '', signals }: CompareSaveRequest) => (
+export const saveSignal = ({ token = '', signals }: CompareSaveRequest): Promise<CompareSaveResponse> => (
 	axios({
 		method: 'post',
 		url: `${process.env.API_GATEWAY}/signals/save-signal`,

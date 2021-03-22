@@ -7,11 +7,7 @@ import storeSelector  from './storeSelector';
 
 const FETCH_INTERVAL = 3000;
 
-type Props = {
-	children: React.ReactElement,
-};
-
-export const WithPrices: React.FC<Props> = ({ children }) => {
+export const PricesFetcher: React.FC = () => {
 	const interval: React.MutableRefObject<NodeJS.Timer | null> = useRef(null);
 	const { compareStore } = useSelector(storeSelector);
 	
@@ -44,5 +40,5 @@ export const WithPrices: React.FC<Props> = ({ children }) => {
 		}, FETCH_INTERVAL);
 	}, [compareStore.length]);
 	
-	return children;
+	return null;
 };

@@ -43,6 +43,8 @@ const ChartPageContent = () => {
 		if (existSymbol) return;
 		try {
 			await addCompareAction([{ symbol: chosenPair, markets: chosenMarkets}]);
+			chooseMarket([]);
+			choosePair('');
 		} catch (e) {
 		  setError(getApiError(e).message);
 		}

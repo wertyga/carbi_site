@@ -11,6 +11,7 @@ const useStyles = makeStyles(({ spacing, typography }: Theme) => ({
 	},
 	marketData: {
 		display: 'flex',
+		flexWrap: 'wrap',
 	},
 	marketItem: {
 		display: 'flex',
@@ -23,7 +24,7 @@ const useStyles = makeStyles(({ spacing, typography }: Theme) => ({
 		fontWeight: typography.fontWeightBold,
 	},
 	compareContainer: {
-		width: '100%',
+		width: '99%',
 	},
 	closeIcon: {
 		position: 'absolute',

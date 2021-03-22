@@ -1,3 +1,5 @@
+import { NotifyItem } from './notifiers';
+
 export enum CompareTypes {
 	ADD_COMPARE_ITEMS = 'ADD_COMPARE_ITEMS',
 	REMOVE_COMPARE_ITEM = 'REMOVE_COMPARE_ITEM',
@@ -5,10 +7,20 @@ export enum CompareTypes {
 	SET_COMPARES = 'SET_COMPARES',
 };
 
-export type CompareItem = { symbol: string, markets: string[], _id: string };
+export type CompareItem = {
+	symbol: string,
+	markets: string[],
+	_id: string,
+	notifiers: NotifyItem[],
+};
 export type CompareState = CompareItem[];
 
 export type CompareSaveRequest = {
 	token?: string,
-	signals: CompareItem[],
+	signals: { symbol: string, markets: string[] }[],
+};
+export type CompareSaveResponse = {
+	data: {
+		data: CompareItem[],
+	},
 };

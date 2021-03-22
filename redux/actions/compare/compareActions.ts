@@ -10,7 +10,7 @@ export const setComparesAction = (compares: CompareItem[]) => {
 	});
 };
 
-export const addCompareAction = async (signals: CompareItem[]) => {
+export const addCompareAction = async (signals: { symbol: string, markets: string[]}[]) => {
 	const { rootState: { userStore: { token } } } = rootAction();
 
 	const { data: { data } } = await saveSignal({ token, signals });

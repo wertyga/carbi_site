@@ -1,17 +1,8 @@
-import { useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 import { Loader } from 'components/Common/Loader/Loader';
 import CompareContent from 'components/CompareContent/CompareContent';
 
-import { useRouter } from 'next/router';
-
 const ChartCompare = () => {
-	const interval: React.MutableRefObject<NodeJS.Timer | null> = useRef(null);
-	const { cookies } = useSelector(({ cookiesStore }) => ({
-		cookies: cookiesStore,
-	}));
-	const router = useRouter();
-	const dispatch = useDispatch();
 	const [state, setState] = useState({ error: '', pending: false });
 	
 	return (

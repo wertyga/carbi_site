@@ -7,6 +7,7 @@ import Markets from '../Menus/Markets/Markets';
 import PairsMenu from '../Menus/PairsMenu/PairsMenu';
 
 import useStyles from './styles';
+import CompareList from "../Compare/CompareList/CompareList";
 
 type Props = {
 	chosenMarkets: string[],
@@ -32,6 +33,10 @@ const ChatPageMobileContent: React.FC<Props> = ({
   const [isMarketsOpen, setMarketsOpen] = useState(false);
 
   const toggleMarketsMenu = () => setMarketsOpen(!isMarketsOpen);
+  const handleMobileCompare = () => {
+	  setMarketsOpen(false);
+	  handleCompare();
+  };
 
   return (
     <div className={styles.chartContentMobile}>
@@ -50,11 +55,12 @@ const ChatPageMobileContent: React.FC<Props> = ({
             chosenPair={chosenPair}
             className={styles.childMenu}
             handleClear={handleClearMarkets}
-            handleCompare={handleCompare}
+            handleCompare={handleMobileCompare}
             headIcon={<CloseIcon onClick={toggleMarketsMenu} />}
           />
         </div>
       </Slide>
+	    <CompareList />
     </div>
   );
 };

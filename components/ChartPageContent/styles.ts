@@ -46,6 +46,7 @@ const useStyles = makeStyles(({ palette, spacing, breakpoints }: Theme) => ({
   chartContentDesktop: {
     width: '100%',
     display: 'flex',
+    alignItems: 'flex-start',
   },
   menusWrapper: {
     display: 'flex',

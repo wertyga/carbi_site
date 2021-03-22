@@ -5,7 +5,7 @@ import { cookiesStore } from './cookiesStore/cookiesStore';
 import { userStore } from './userStore/userStore';
 import { compareStore } from './compareStore/compareStore';
 import { pricesStore } from './pricesStore/pricesStore';
-import { signalsStore } from './signalsStore/signalsStore';
+import { notifiesStore } from './notifiesStore/notifiesStore';
 
 export const rootReducer = combineReducers({
   deviceStore,
@@ -13,6 +13,6 @@ export const rootReducer = combineReducers({
   cookiesStore,
   compareStore,
   pricesStore,
-  signalsStore,
+  notifiesStore,
   userStore,
 });

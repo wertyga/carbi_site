@@ -12,6 +12,7 @@ import { getUserAction } from 'redux/actions/user/userActions';
 import { removeCookeAction } from 'redux/actions/cookies/cookiesActions';
 
 import 'styles/globals.css';
+import 'styles/variables.css';
 
 export default class CarbiApp extends App {
   reduxStore;
@@ -48,9 +49,9 @@ export default class CarbiApp extends App {
     if (!token) return;
 
     try {
-      await getUserAction(token, this.reduxStore.dispatch);
+      await getUserAction();
     } catch (e) {
-      removeCookeAction('token', this.reduxStore.dispatch);
+      removeCookeAction('token');
     }
   }
 
