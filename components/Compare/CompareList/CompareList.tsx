@@ -11,6 +11,7 @@ import useStyles from './styles';
 const CompareList = () => {
 	const { pricesStore, compareStore } = useSelector(storeSelector);
 	const styles = useStyles();
+	console.log({ pricesStore, compareStore });
 	return (
 		<>
 			<PricesFetcher />

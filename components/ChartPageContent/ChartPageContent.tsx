@@ -59,7 +59,7 @@ const ChartPageContent = () => {
 	return (
 		<div className={styles.root}>
 			{error && <span className="error">{error}</span>}
-			{isMobile ?
+			{isMobile &&
 				<ChartPageMobileContent
 					chosenPair={chosenPair}
 					chosenMarkets={chosenMarkets}
@@ -69,18 +69,19 @@ const ChartPageContent = () => {
 					handleClearMarkets={handleClearMarkets}
 					handleCompare={handleCompare}
 					styles={styles}
-				/> :
-				<ChatPageDesktopContent
-					chosenPair={chosenPair}
-					chosenMarkets={chosenMarkets}
-					handleMarketSelect={handleMarketSelect}
-					handleChoosePair={handleChoosePair}
-					handleClearPairs={handleClearPairs}
-					handleClearMarkets={handleClearMarkets}
-					handleCompare={handleCompare}
-					styles={styles}
-				/>
-			}
+				/>}
+				{!isMobile &&
+					<ChatPageDesktopContent
+						chosenPair={chosenPair}
+						chosenMarkets={chosenMarkets}
+						handleMarketSelect={handleMarketSelect}
+						handleChoosePair={handleChoosePair}
+						handleClearPairs={handleClearPairs}
+						handleClearMarkets={handleClearMarkets}
+						handleCompare={handleCompare}
+						styles={styles}
+					/>
+				}
 			
 		</div>
 	);

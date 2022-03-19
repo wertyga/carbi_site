@@ -24,10 +24,11 @@ const CompareContent = () => {
 			<div className={styles.compareContent}>
 				{compares.map(({ symbol, markets, _id }) => {
 					if (!prices[symbol]) return null;
+					console.log(markets, prices);
 					const chartData = [
 						['Market', 'Price'],
 						...markets.map(market => {
-							const { price = 0 } = prices[symbol].find(item => item.market === market) || {};
+							const price = prices[symbol][market] || 0;
 							return [`${market} - ${price}`, price]
 						})
 					];

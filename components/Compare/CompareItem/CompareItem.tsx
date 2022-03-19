@@ -38,7 +38,7 @@ export const CompareItem: React.FC<Props> = ({ pair, marketsPrice, id }) => {
 		if (pending) return;
 		router.push('/chart/compare');
 	};
-	
+	console.log(marketsPrice);
 	return (
 		<div
 			role="presentation"
@@ -46,12 +46,10 @@ export const CompareItem: React.FC<Props> = ({ pair, marketsPrice, id }) => {
 			className={`${styles.compareContainer} ${pending ? 'disabled' : ''}`}
 		>
 			<Card className={styles.compareItem}>
-				{!!token &&
-					<CloseIcon
-						onClick={deleteCompareItem}
-						className={styles.closeIcon}
-					/>
-				}
+				<CloseIcon
+					onClick={deleteCompareItem}
+					className={styles.closeIcon}
+				/>
 				<span className={styles.pair}>{pair}</span>
 				<div className={styles.marketData}>
 					{marketsPrice.map(({ market, price }) => (
